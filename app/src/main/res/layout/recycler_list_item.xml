@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/recycler_list_item_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/nicecrab"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/recycler_list_item_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Spicy Crab"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:textColor="@color/White"
+            android:layout_alignBottom="@id/recycler_list_item_image_view"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+

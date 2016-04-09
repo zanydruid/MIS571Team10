@@ -247,6 +247,7 @@ public class Kitchen {
             wrapper.moveToFirst();
             while(!wrapper.isAfterLast()){
                 recipes.add(wrapper.getRecipe());
+                wrapper.moveToNext();
             }
 
         } finally {

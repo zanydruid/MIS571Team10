@@ -1,5 +1,7 @@
 package zanydruid.team10foodrecipe.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,18 +29,22 @@ public class RecipeActivity extends AppCompatActivity {
 
     private FragmentTabHost mTabHost;
 
+    private static final String EXTRA_RECIPE_ID = "recipeId";
+
+    public static Intent newIntent(Context context, int id){
+        Intent intent = new Intent(context,RecipeActivity.class);
+        intent.putExtra(EXTRA_RECIPE_ID,id);
+        return intent;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
-        // Copy the db in assets to data/data/
-        try{
-            Kitchen.copyDB(getBaseContext());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        mRecipe = Kitchen.getInstance(this).getRecipeById(1);
+        int id = (int)getIntent().getSerializableExtra(EXTRA_RECIPE_ID);
+
+        mRecipe = Kitchen.getInstance(this).getRecipeById(id);
         mRecipeName = (TextView) findViewById(R.id.activity_recipe_name_text_view);
         mRecipeName.setText(mRecipe.getName());
 
