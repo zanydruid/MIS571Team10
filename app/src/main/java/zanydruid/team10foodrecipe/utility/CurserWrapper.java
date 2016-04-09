@@ -3,6 +3,7 @@ package zanydruid.team10foodrecipe.utility;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import zanydruid.team10foodrecipe.Models.Comment;
 import zanydruid.team10foodrecipe.Models.Flavor;
 import zanydruid.team10foodrecipe.Models.Ingredient;
 import zanydruid.team10foodrecipe.Models.Nutrition;
@@ -47,8 +48,9 @@ public class CurserWrapper extends android.database.CursorWrapper {
     public Nutrition getNutrition(){
         int nutritionId = getInt(0);
         String nutritionName = getString(1);
-        int unitId = getInt(2);
-        Nutrition nutrition = new Nutrition(nutritionId,nutritionName,unitId);
+        double amount = getDouble(2);
+        int unitId = getInt(3);
+        Nutrition nutrition = new Nutrition(nutritionId,nutritionName,amount,unitId);
         return nutrition;
     }
 
@@ -82,5 +84,11 @@ public class CurserWrapper extends android.database.CursorWrapper {
         return recipe;
     }
 
+    public Comment getComment(){
+        int rating = getInt(0);
+        String commentString = getString(1);
+        Comment comment = new Comment(commentString,rating);
+        return comment;
+    }
 
 }

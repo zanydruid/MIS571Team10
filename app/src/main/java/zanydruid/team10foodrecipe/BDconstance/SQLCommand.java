@@ -17,7 +17,9 @@ public abstract class SQLCommand
     // get list of ingredients by a recipe id
     public static final String GET_INGREDIENTS = "select I.Iid,I.ingredientName,D.IAmount,D.Uid from ingredient I, ingredientdetails D where I.Iid = D.Iid and D.Rid = ?";
 
-    public static final String GET_NUTRITIONS = "select N.Nid,N.NName,D.Uid from nutrition N, nutritiondetail D where N.Nid = D.Nid";
+    public static final String GET_NUTRITIONS = "select N.Nid,N.NName,D.NAmount,D.Uid from nutrition N, nutritiondetails D where N.Nid = D.Nid and D.Rid = ?";
+
+    public static final String GET_COMMENTS = "select CRating, Comment from comment where Rid =?";
 
     public static final String GET_FLAVORS = "select * from Flavor";
 

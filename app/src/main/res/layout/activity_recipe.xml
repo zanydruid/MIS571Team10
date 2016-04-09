@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -12,7 +13,7 @@
             <ImageView
                 android:id="@+id/activity_recipe_photo_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="250dp"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/nicecrab"
                 android:scaleType="fitXY"/>
@@ -23,62 +24,25 @@
                 android:layout_below="@id/activity_recipe_photo_image_view"
                 android:text="Spicy Crab"
                 android:layout_margin="10dp"
-                android:textSize="20sp"
-                android:layout_centerHorizontal="true"/>
+                android:textSize="20sp"/>
             <RatingBar
                 android:id="@+id/activity_recipe_ratingbar_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:rating="2"
+                android:layout_marginTop="18dp"
                 style="@android:style/Widget.DeviceDefault.RatingBar.Small"
-                android:layout_below="@id/activity_recipe_name_text_view"
-                android:layout_centerHorizontal="true"/>
+                android:layout_below="@id/activity_recipe_photo_image_view"
+                android:layout_toRightOf="@id/activity_recipe_name_text_view"/>
         </RelativeLayout>
         <include layout="@layout/recipe_infor_layout"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/darkGrey"/>
-        <EditText
-            android:id="@+id/activity_recipe_comment_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:layout_gravity="center_horizontal"/>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RatingBar
-                android:id="@+id/activity_recipe_ratingbar_editor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@android:style/Widget.Holo.RatingBar"
-                android:numStars="5"
-                android:layout_marginRight="10dp"/>
-            <Button
-                android:id="@+id/activity_recipe_comment_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="submit"
-                android:layout_gravity="right"
-                android:layout_marginLeft="10dp"/>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/darkGrey"/>
-        <android.support.design.widget.TabLayout
-            android:id="@+id/activity_recipe_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <android.support.v4.view.ViewPager
-            android:id="@+id/activity_recipe_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v4.view.ViewPager>
+        <include layout="@layout/fragment_tab_host"/>
 
     </LinearLayout>
-    </ScrollView>
+</ScrollView>
+

@@ -19,6 +19,7 @@ import java.util.List;
 
 import zanydruid.team10foodrecipe.BDconstance.DBConstant;
 import zanydruid.team10foodrecipe.BDconstance.SQLCommand;
+import zanydruid.team10foodrecipe.Models.Comment;
 import zanydruid.team10foodrecipe.Models.Flavor;
 import zanydruid.team10foodrecipe.Models.Ingredient;
 import zanydruid.team10foodrecipe.Models.Nutrition;
@@ -34,9 +35,6 @@ public class Kitchen {
     private SQLiteDatabase mDatabase;
     private Context mContext;
     private List<Unit> mUnits;
-//    private List<Ingredient> mIngredients;
-//    private List<Nutrition> mNutritions;
-//    private List<Flavor> mFlavors;
     private static final String TAG = "Kitchen";
 
     private Kitchen(Context context) {
@@ -48,12 +46,6 @@ public class Kitchen {
             mDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
             // Initiate unit list
             mUnits = this.getUnitsFromDB();
-            // Initiate ingredient list
-            //mIngredients = this.getIngredientFromDB();
-            // Initiate nutrition list
-            //mNutritions = this.getNutritionsFromDB();
-            // Initiate flavor list
-            //mFlavors = this.getFlavorsFromDB();
         }else{
             Log.e(TAG,"path doesn't exist.");
         }
@@ -160,8 +152,10 @@ public class Kitchen {
      *
      * @return
      */
-    private List<Nutrition> getNutritionsFromDB(){
-        Cursor cursor = this.execQuery(SQLCommand.GET_NUTRITIONS);
+    public List<Nutrition> getNutritionsFromDB(int id){
+        String[] args = new String[1];
+        args[0] = String.valueOf(id);
+        Cursor cursor = this.execQuery(SQLCommand.GET_NUTRITIONS,args);
         CurserWrapper wrapper = new CurserWrapper(cursor);
         List<Nutrition> nutritions = new ArrayList<>();
         try{
@@ -275,6 +269,24 @@ public class Kitchen {
         } finally {
             wrapper.close();
         }
+    }
+
+    public List<Comment> getCommentsById(int id){
+        String[] args = new String[1];
+        args[0] = String.valueOf(id);
+        Cursor  cursor = this.execQuery(SQLCommand.GET_COMMENTS,args);
+        CurserWrapper wrapper = new CurserWrapper(cursor);
+        List<Comment> comments = new ArrayList<>();
+        try{
+            wrapper.moveToFirst();
+            while(!wrapper.isAfterLast()){
+                comments.add(wrapper.getComment());
+                wrapper.moveToNext();
+            }
+        } finally {
+            wrapper.close();
+        }
+        return comments;
     }
     /**
      * Copy database file

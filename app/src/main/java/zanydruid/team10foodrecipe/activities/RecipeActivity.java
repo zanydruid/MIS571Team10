@@ -1,14 +1,17 @@
 package zanydruid.team10foodrecipe.activities;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.RatingBar;
+import android.widget.TabHost;
 import android.widget.TextView;
 
 import zanydruid.team10foodrecipe.Models.Recipe;
 import zanydruid.team10foodrecipe.R;
+import zanydruid.team10foodrecipe.fragments.CommentFragment;
+import zanydruid.team10foodrecipe.fragments.IngredientFragment;
+import zanydruid.team10foodrecipe.fragments.NutritionFragment;
 import zanydruid.team10foodrecipe.utility.Kitchen;
 
 public class RecipeActivity extends AppCompatActivity {
@@ -21,7 +24,8 @@ public class RecipeActivity extends AppCompatActivity {
     private TextView mPeopleServe;
     private TextView mDescription;
     private TextView mSource;
-    private ViewPager mViewPager;
+
+    private FragmentTabHost mTabHost;
 
 
     @Override
@@ -48,18 +52,27 @@ public class RecipeActivity extends AppCompatActivity {
         mCalorieTextView.setText(String.valueOf(mRecipe.getCaloriesNum())+"cal");
 
         mPeopleServe = (TextView) findViewById(R.id.recipe_infor_people_toserve_text_view);
-        mPeopleServe.setText(String.valueOf(mRecipe.getServePeople())+"people");
+        mPeopleServe.setText(String.valueOf(mRecipe.getServePeople())+" people");
 
         mDescription = (TextView) findViewById(R.id.recipe_infor_description_text_view);
         mDescription.setText(mRecipe.getDescription());
 
         mSource = (TextView) findViewById(R.id.recipe_infor_source_text_view);
         mSource.setText(mRecipe.getSource());
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.activity_recipe_tab);
-        tabLayout.addTab(tabLayout.newTab().setText("Ingredient"));
-        tabLayout.addTab(tabLayout.newTab().setText("Nutrition"));
-        tabLayout.addTab(tabLayout.newTab().setText("Comments"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
+
+        Bundle ingredientArgs = new Bundle();
+        ingredientArgs.putSerializable(IngredientFragment.ARG_INGREDIENT, mRecipe.getId());
+        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator("Ingredients"), IngredientFragment.class, ingredientArgs);
+        Bundle nutritionArgs = new Bundle();
+        nutritionArgs.putSerializable(NutritionFragment.ARG_NUTRITION, mRecipe.getId());
+        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator("Nutritions"), NutritionFragment.class, nutritionArgs);
+        Bundle commentArgs = new Bundle();
+        commentArgs.putSerializable(CommentFragment.ARG_COMMENT,mRecipe.getId());
+        mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("Comments"),CommentFragment.class,commentArgs);
 
     }
+
 }

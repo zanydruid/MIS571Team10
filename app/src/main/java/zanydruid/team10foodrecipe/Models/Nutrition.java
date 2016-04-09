@@ -6,12 +6,22 @@ package zanydruid.team10foodrecipe.Models;
 public class Nutrition{
     int nutritionId;
     String nutriName;
+    double amount;
     int unitId;
 
-    public Nutrition(int id, String name, int uid){
+    public Nutrition(int id, String name, double amount, int uid){
         this.nutritionId = id;
-        this.nutriName = name;
+        this.nutriName = name;;
+        this.amount = amount;
         this.unitId = uid;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public int getUnitId() {

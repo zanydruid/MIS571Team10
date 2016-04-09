@@ -9,22 +9,21 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import zanydruid.team10foodrecipe.Models.Ingredient;
+import zanydruid.team10foodrecipe.Models.Nutrition;
 import zanydruid.team10foodrecipe.R;
 import zanydruid.team10foodrecipe.utility.Kitchen;
 
 /**
- * Created by yizhu on 4/5/16.
+ * Created by yizhu on 4/8/16.
  */
-public class ListAdapter extends ArrayAdapter<Ingredient> {
-
-    private List<Ingredient> mIngredientList;
+public class NutritionListAdapter extends ArrayAdapter<Nutrition> {
+    private List<Nutrition> mNutritions;
     private Context mContext;
 
-    public ListAdapter(Context context,List<Ingredient> ingredients){
-        super(context,-1,ingredients);
+    public NutritionListAdapter(Context context, List<Nutrition> nutritions){
+        super(context,R.layout.list_view_item,nutritions);
         mContext = context;
-        mIngredientList = ingredients;
+        mNutritions = nutritions;
     }
 
     @Override
@@ -32,11 +31,11 @@ public class ListAdapter extends ArrayAdapter<Ingredient> {
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.list_view_item,parent,false);
         TextView nameTextView = (TextView) view.findViewById(R.id.list_view_item_name);
-        nameTextView.setText(mIngredientList.get(position).getIngreName());
+        nameTextView.setText(mNutritions.get(position).getNutriName());
         TextView amountTextView = (TextView) view.findViewById(R.id.list_view_item_amount);
-        amountTextView.setText(String.valueOf(mIngredientList.get(position).getAmount()));
+        amountTextView.setText(String.valueOf(mNutritions.get(position).getAmount()));
         TextView unitTextView = (TextView) view.findViewById(R.id.list_view_item_unit);
-        int id = mIngredientList.get(position).getUnitId();
+        int id = mNutritions.get(position).getUnitId();
         unitTextView.setText(Kitchen.getInstance(mContext).getUnitById(id).getUnit());
 
         return view;
