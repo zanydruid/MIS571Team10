@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import zanydruid.team10foodrecipe.Adapters.NutritionListAdapter;
 import zanydruid.team10foodrecipe.Models.Nutrition;
 import zanydruid.team10foodrecipe.R;
 import zanydruid.team10foodrecipe.utility.Kitchen;
@@ -27,7 +26,7 @@ public class NutritionFragment extends Fragment {
 
     private TextView mTitleTextView;
     private ListView mListView;
-    private NutritionListAdapter mAdapter;
+    private NutritionAdapter mAdapter;
 
     private int mId;
 
@@ -53,7 +52,7 @@ public class NutritionFragment extends Fragment {
         mTitleTextView = (TextView) view.findViewById(R.id.fragment_list_view_title_text_view);
         mTitleTextView.setText("NUTRITIONS");
         mListView = (ListView) view.findViewById(R.id.fragment_list_view_list_view);
-        mAdapter = new NutritionListAdapter(getActivity(),mNutritions);
+        mAdapter = new NutritionAdapter(getActivity(),mNutritions);
         mListView.setAdapter(mAdapter);
 
         return view;
