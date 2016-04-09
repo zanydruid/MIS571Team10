@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,6 +30,9 @@ public class CommentFragment extends Fragment {
     private int mId;
 
     private TextView mTitleTextView;
+    private EditText mCommentInput;
+    private RatingBar mRatingBar;
+    private Button mCommentButton;
     private ListView mListView;
     private CommentAdapter mAdapter;
 
@@ -51,11 +57,37 @@ public class CommentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comments_layout,container,false);
         mTitleTextView = (TextView) view.findViewById(R.id.fragment_comments_title_text_view);
         mTitleTextView.setText("COMMENTS");
+        mCommentInput = (EditText) view.findViewById(R.id.fragment_comments_comment);
+        mRatingBar = (RatingBar) view.findViewById(R.id.fragment_comments_rating_bar);
+        mCommentButton = (Button) view.findViewById(R.id.fragment_comments_submit_button);
+        mCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int recipeId = mId;
+                String commentString = mCommentInput.getText().toString();
+                int rating = (int) mRatingBar.getRating();
+                Kitchen.getInstance(getActivity()).writeComment(recipeId,commentString,rating);
+                Toast.makeText(getActivity(),"A new comment is inserted.",Toast.LENGTH_SHORT).show();
+                mComments = Kitchen.getInstance(getActivity()).getCommentsById(mId);
+                Comment lastComment = mComments.get(mComments.size()-1);
+                mAdapter.add(lastComment);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         mListView = (ListView)view.findViewById(R.id.fragment_comments_list_view);
-        mAdapter = new CommentAdapter(getActivity(),mComments);
-        mListView.setAdapter(mAdapter);
+        updateUI(mComments);
 
         return view;
+    }
+
+    public void updateUI(List<Comment> comments){
+        if(mAdapter==null){
+            mAdapter = new CommentAdapter(getActivity(),comments);
+            mListView.setAdapter(mAdapter);
+        }else{
+
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private class CommentAdapter extends ArrayAdapter<Comment>{

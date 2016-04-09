@@ -124,30 +124,6 @@ public class Kitchen {
     }
 
     /**
-     * Actual method to get Ingredients
-     *
-     * @return
-     */
-//    public List<Ingredient> getIngredients(){
-//        return this.mIngredients;
-//    }
-
-    /**
-     * Get specified ingredient by id
-     *
-     * @param id
-     * @return
-     */
-//    public Ingredient getIngredientById(int id){
-//        for(Ingredient ingredient: mIngredients){
-//            if(ingredient.getIngredientId()==id){
-//                return ingredient;
-//            }
-//        }
-//        return null;
-//    }
-
-    /**
      * Get nutrition list from database
      *
      * @return
@@ -171,30 +147,6 @@ public class Kitchen {
     }
 
     /**
-     * Actual method get Nutritions
-     *
-     * @return
-     */
-//    public List<Nutrition> getNutritions(){
-//        return this.mNutritions;
-//    }
-
-    /**
-     * Get specified Nutrition by id
-     *
-     * @param id
-     * @return
-     */
-//    public Nutrition getNutritionById(int id){
-//        for(Nutrition nutrition: mNutritions){
-//            if(nutrition.getNutritionId()==id){
-//                return nutrition;
-//            }
-//        }
-//        return null;
-//    }
-
-    /**
      * Get flavor list from database
      *
      * @return
@@ -214,31 +166,12 @@ public class Kitchen {
         return flavors;
     }
 
+
     /**
-     * Actual method to get Flavors
+     * Get all the recipes from database
      *
      * @return
      */
-//    public List<Flavor> getFlavors(){
-//        return this.mFlavors;
-//    }
-
-    /**
-     * Get flavor by id
-     *
-     * @param
-     * @return
-     */
-
-//    public Flavor getFlavorById(int id){
-//        for(Flavor flavor: mFlavors){
-//            if(flavor.getFlavorId()==id){
-//                return flavor;
-//            }
-//        }
-//        return null;
-//    }
-
     public List<Recipe> getRecipesFromDB(){
         Cursor cursor = this.execQuery(SQLCommand.GET_RECIPES);
         CurserWrapper wrapper = new CurserWrapper(cursor);
@@ -256,6 +189,12 @@ public class Kitchen {
         return recipes;
     }
 
+    /**
+     * Get specified recipe by its id
+     *
+     * @param id
+     * @return
+     */
     public Recipe getRecipeById(int id){
         String[]args = new String[1];
         args[0] = String.valueOf(id);
@@ -272,6 +211,12 @@ public class Kitchen {
         }
     }
 
+    /**
+     * Get comments of one recipe by its id
+     *
+     * @param id
+     * @return
+     */
     public List<Comment> getCommentsById(int id){
         String[] args = new String[1];
         args[0] = String.valueOf(id);
@@ -289,6 +234,21 @@ public class Kitchen {
         }
         return comments;
     }
+
+    /**
+     * Write a new comment into database
+     *
+     * @param commentString
+     * @param rating
+     */
+    public void writeComment(int recipeId, String commentString, int rating){
+        String[] args = new String[3];
+        args[0] = String.valueOf(recipeId);
+        args[1] = commentString;
+        args[2] = String.valueOf(rating);
+        this.execSQL(SQLCommand.WRITE_COMMENT,args);
+    }
+
     /**
      * Copy database file
      * From assets folder (in the project) to android folder (on device)

@@ -21,6 +21,8 @@ public abstract class SQLCommand
 
     public static final String GET_COMMENTS = "select CRating, Comment from comment where Rid =?";
 
+    public static final String WRITE_COMMENT = "insert into Comment(Rid,comment,crating) values (?,?,?)";
+
     public static final String GET_FLAVORS = "select * from Flavor";
 
     public static final String GET_RECIPES = "select * from Recipe";
