@@ -5,27 +5,19 @@
               android:layout_height="match_parent">
     <TextView
         android:id="@+id/list_view_item_name"
-        android:layout_width="50dp"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:text="salt"
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:gravity="center_horizontal"/>
     <TextView
-        android:id="@+id/list_view_item_amount"
+        android:id="@+id/list_view_item_amount_and_unit"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="3"
+        android:text="3 teaspoon"
         android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal"/>
-    <TextView
-        android:id="@+id/list_view_item_unit"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:text="spoon"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center_horizontal"/>
 
 </LinearLayout>

@@ -73,12 +73,10 @@ public class IngredientFragment extends Fragment{
             TextView name = (TextView) convertView.findViewById(R.id.list_view_item_name);
             name.setText(ingredient.getIngreName());
 
-            TextView amount = (TextView) convertView.findViewById(R.id.list_view_item_amount);
-            amount.setText(String.valueOf(ingredient.getAmount()));
-
-            TextView unit = (TextView) convertView.findViewById(R.id.list_view_item_unit);
-            int id = ingredient.getUnitId();
-            unit.setText(Kitchen.getInstance(getActivity()).getUnitById(id).getUnit());
+            TextView amountAndUnit = (TextView) convertView.findViewById(R.id.list_view_item_amount_and_unit);
+            double amount = ingredient.getAmount();
+            String unit = Kitchen.getInstance(getActivity()).getUnitById(ingredient.getUnitId()).getUnit();
+            amountAndUnit.setText(amount + " " + unit);
 
             return convertView;
         }
