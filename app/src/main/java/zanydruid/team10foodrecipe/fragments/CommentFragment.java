@@ -66,17 +66,16 @@ public class CommentFragment extends Fragment {
                 int recipeId = mId;
                 String commentString = mCommentInput.getText().toString();
                 int rating = (int) mRatingBar.getRating();
-                Kitchen.getInstance(getActivity()).writeComment(recipeId,commentString,rating);
-                Toast.makeText(getActivity(),"A new comment is inserted.",Toast.LENGTH_SHORT).show();
+                Kitchen.getInstance(getActivity()).writeComment(recipeId, commentString, rating);
+                Toast.makeText(getActivity(), "A new comment is inserted.", Toast.LENGTH_SHORT).show();
                 mComments = Kitchen.getInstance(getActivity()).getCommentsById(mId);
-                Comment lastComment = mComments.get(mComments.size()-1);
+                Comment lastComment = mComments.get(mComments.size() - 1);
                 mAdapter.add(lastComment);
                 mAdapter.notifyDataSetChanged();
             }
         });
         mListView = (ListView)view.findViewById(R.id.fragment_comments_list_view);
         updateUI(mComments);
-
         return view;
     }
 
