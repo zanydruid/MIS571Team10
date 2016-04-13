@@ -6,8 +6,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
 
 import zanydruid.team10foodrecipe.Models.Ingredient;
+import zanydruid.team10foodrecipe.utility.Kitchen;
 
 /**
  * Created by yizhu on 4/9/16.
@@ -15,10 +19,18 @@ import zanydruid.team10foodrecipe.Models.Ingredient;
 public class IngredientCreateFragment extends Fragment {
 
     private int mId;
+    private List<Ingredient> mIngredientList;
 
     public static IngredientCreateFragment newInstance(){
         IngredientCreateFragment fragment = new IngredientCreateFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mIngredientList = Kitchen.getInstance(getActivity()).getAllIngredients();
+
     }
 
     @Nullable
@@ -36,5 +48,9 @@ public class IngredientCreateFragment extends Fragment {
             this.ingredient = ingredient;
         }
 
+    }
+
+    static class ViewHolder {
+        TextView textView;
     }
 }

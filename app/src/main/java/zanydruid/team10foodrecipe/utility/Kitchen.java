@@ -108,7 +108,23 @@ public class Kitchen {
     public List<Ingredient> getIngredientsById(int id){
         String[] args = new String[1];
         args[0] = String.valueOf(id);
-        Cursor cursor = this.execQuery(SQLCommand.GET_INGREDIENTS,args);
+        Cursor cursor = this.execQuery(SQLCommand.GET_INGREDIENTS_BY_ID,args);
+        CurserWrapper wrapper = new CurserWrapper(cursor);
+        List<Ingredient> ingredients = new ArrayList<>();
+        try{
+            wrapper.moveToFirst();
+            while(!wrapper.isAfterLast()){
+                ingredients.add(wrapper.getIngredientDetail());
+                wrapper.moveToNext();
+            }
+        } finally {
+            wrapper.close();
+        }
+        return ingredients;
+    }
+
+    public List<Ingredient> getAllIngredients(){
+        Cursor cursor = this.execQuery(SQLCommand.GET_INGREDIENTS);
         CurserWrapper wrapper = new CurserWrapper(cursor);
         List<Ingredient> ingredients = new ArrayList<>();
         try{

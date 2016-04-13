@@ -36,13 +36,24 @@ public class CurserWrapper extends android.database.CursorWrapper {
      *
      * @return
      */
-    public Ingredient getIngredient(){
+    public Ingredient getIngredientDetail(){
         int ingredientId = getInt(0);
         String ingredientName = getString(1);
         double amount = getDouble(2);
         int unitId = getInt(3);
         Ingredient ingredient = new Ingredient(ingredientId,ingredientName,amount,unitId);
         return ingredient;
+    }
+
+    /**
+     * Get Ingredient for choices
+     *
+     * @return
+     */
+    public Ingredient getIngredient(){
+        int ingredientId = getInt(0);
+        String ingredientName = getString(1);
+        return new Ingredient(ingredientId, ingredientName);
     }
 
     public Nutrition getNutrition(){

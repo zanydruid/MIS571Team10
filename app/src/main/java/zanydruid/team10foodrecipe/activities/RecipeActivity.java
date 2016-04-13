@@ -78,12 +78,6 @@ public class RecipeActivity extends AppCompatActivity {
         Bundle commentArgs = new Bundle();
         commentArgs.putSerializable(CommentFragment.ARG_COMMENT, mRecipe.getId());
         mTabHost.addTab(mTabHost.newTabSpec("tab3").setIndicator("Comments"), CommentFragment.class, commentArgs);
-        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-
-            }
-        });
 
     }
 

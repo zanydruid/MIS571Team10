@@ -15,7 +15,9 @@ public abstract class SQLCommand
     public static final String GET_UNITS = "select * from Unit";
 
     // get list of ingredients by a recipe id
-    public static final String GET_INGREDIENTS = "select I.Iid,I.ingredientName,D.IAmount,D.Uid from ingredient I, ingredientdetails D where I.Iid = D.Iid and D.Rid = ?";
+    public static final String GET_INGREDIENTS_BY_ID = "select I.Iid,I.ingredientName,D.IAmount,D.Uid from ingredient I, ingredientdetails D where I.Iid = D.Iid and D.Rid = ?";
+
+    public static final String GET_INGREDIENTS = "select * from ingredient";
 
     public static final String GET_NUTRITIONS = "select N.Nid,N.NName,D.NAmount,D.Uid from nutrition N, nutritiondetails D where N.Nid = D.Nid and D.Rid = ?";
 

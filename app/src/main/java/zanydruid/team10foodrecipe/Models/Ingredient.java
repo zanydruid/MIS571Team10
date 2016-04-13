@@ -16,6 +16,11 @@ public class Ingredient{
         this.unitId = uid;
     }
 
+    public Ingredient(int id, String name){
+        this.ingredientId = id;
+        this.ingreName = name;
+    }
+
 
     public double getAmount() {
         return amount;

@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <TextView
+        android:layout_margin="10dp"
         android:id="@+id/list_view_item_ingredient_title_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pork"/>
+    <EditText
+
+        android:id="@+id/list_view_item_ingredient_amount_edit_view"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="type in amount here"/>
+    <TextView
+        android:id="@+id/list_view_item_ingredient_unit_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="pound"/>
 
 </LinearLayout>

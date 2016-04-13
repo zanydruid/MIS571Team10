@@ -75,18 +75,9 @@ public class CommentFragment extends Fragment {
             }
         });
         mListView = (ListView)view.findViewById(R.id.fragment_comments_list_view);
-        updateUI(mComments);
+        mAdapter = new CommentAdapter(getActivity(),mComments);
+        mListView.setAdapter(mAdapter);
         return view;
-    }
-
-    public void updateUI(List<Comment> comments){
-        if(mAdapter==null){
-            mAdapter = new CommentAdapter(getActivity(),comments);
-            mListView.setAdapter(mAdapter);
-        }else{
-
-            mAdapter.notifyDataSetChanged();
-        }
     }
 
     private class CommentAdapter extends ArrayAdapter<Comment>{

@@ -9,29 +9,64 @@
         android:gravity="center_horizontal"
         android:text="Ingredients"/>
     <LinearLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </FrameLayout>
-        <View
-            android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/pane1"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/darkGrey"/>
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ListView
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </FrameLayout>
+                android:layout_height="wrap_content"
+                android:text="Ingredients"/>
+
+            <ListView
+                android:id="@+id/listview1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pane2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="2"
+            android:background="@android:color/background_light"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Ingredients"/>
+            <ListView
+                android:id="@+id/listview2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/fragment_ingredient_create_pre_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pre"/>
+        <Button
+            android:id="@+id/fragment_ingredient_create_finsh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 </LinearLayout>
