@@ -13,13 +13,14 @@
 
         </activity>
         <activity android:name=".activities.RecipeListActivity">
+
+        </activity>
+        <activity android:name=".activities.RecipeCreateActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".activities.RecipeCreateActivity">
         </activity>
 
     </application>

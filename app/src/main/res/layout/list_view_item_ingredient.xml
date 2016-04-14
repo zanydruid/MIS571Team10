@@ -10,17 +10,10 @@
         android:layout_height="wrap_content"
         android:text="Pork"/>
     <EditText
-
         android:id="@+id/list_view_item_ingredient_amount_edit_view"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="type in amount here"/>
-    <TextView
-        android:id="@+id/list_view_item_ingredient_unit_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="pound"/>
 
 </LinearLayout>

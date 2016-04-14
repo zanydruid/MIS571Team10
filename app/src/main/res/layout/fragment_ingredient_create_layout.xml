@@ -16,8 +16,8 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal" >
 
-        <LinearLayout
-            android:id="@+id/pane1"
+        <zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView
+            android:id="@+id/option_area"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -30,13 +30,13 @@
                 android:text="Ingredients"/>
 
             <ListView
-                android:id="@+id/listview1"
+                android:id="@+id/fragment_ingredient_create_option_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView>
 
-        <LinearLayout
-            android:id="@+id/pane2"
+        <zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView
+            android:id="@+id/selected_area"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -48,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:text="Your Ingredients"/>
             <ListView
-                android:id="@+id/listview2"
+                android:id="@+id/fragment_ingredient_create_selected_listview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView>
     </LinearLayout>
 
     <RelativeLayout
