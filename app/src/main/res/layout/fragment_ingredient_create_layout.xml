@@ -42,7 +42,7 @@
             android:layout_margin="4dp"
             android:layout_weight="2"
             android:background="@android:color/background_light"
-            android:orientation="vertical" >
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             <ListView
                 android:id="@+id/fragment_ingredient_create_selected_listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
         </zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView>
     </LinearLayout>
 

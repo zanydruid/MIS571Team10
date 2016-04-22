@@ -6,10 +6,25 @@ package zanydruid.team10foodrecipe.Models;
 public class Flavor{
     int flavorId;
     String flavorName;
+    int amount;
+
+    public Flavor(String name,int amount){
+        this.flavorName = name;
+        this.amount = amount;
+    }
 
     public Flavor(int id, String name){
         this.flavorId = id;
         this.flavorName = name;
+    }
+
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public int getFlavorId() {

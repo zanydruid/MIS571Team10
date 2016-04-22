@@ -3,9 +3,12 @@ package zanydruid.team10foodrecipe.fragments;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -14,17 +17,19 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import zanydruid.team10foodrecipe.Models.Ingredient;
 import zanydruid.team10foodrecipe.R;
+import zanydruid.team10foodrecipe.activities.RecipeListActivity;
 import zanydruid.team10foodrecipe.utility.Kitchen;
 import zanydruid.team10foodrecipe.utility.LinearLayoutAbsListView;
 
@@ -35,31 +40,52 @@ public class IngredientCreateFragment extends Fragment {
 
     private int mId;
     private static final String TAG = "ingrCreateFragment";
+    private static final String ARG_ID = "ingredientCreate";
 
     private ListView optionList;
     private ListView selectedList;
+    private IngredientCallBack mCallBack;
 
     private List<Ingredient> optionIngredients;
     private List<Ingredient> selectedIngredients;
     private ItemOptionListAdapter optionAdapter;
     private ItemSelectedListAdapter selectedAdapter;
     LinearLayoutAbsListView optionArea, selectedArea;
+    private Button preButton;
+    private Button finishButton;
 
-    public static IngredientCreateFragment newInstance(){
+    public static IngredientCreateFragment newInstance(int id){
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_ID, id);
         IngredientCreateFragment fragment = new IngredientCreateFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
+    public interface IngredientCallBack{
+        public void preStep(int id);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallBack = (IngredientCallBack) getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallBack=null;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        mId = (int)getArguments().getSerializable(ARG_ID);
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient_create_layout,container,false);
         optionList = (ListView) view.findViewById(R.id.fragment_ingredient_create_option_listview);
         selectedList = (ListView) view.findViewById(R.id.fragment_ingredient_create_selected_listview);
@@ -84,9 +110,42 @@ public class IngredientCreateFragment extends Fragment {
 
         optionList.setOnItemLongClickListener(myOnItemLongClickListener);
         selectedList.setOnItemLongClickListener(myOnItemLongClickListener);
+
+        preButton = (Button) view.findViewById(R.id.fragment_ingredient_create_pre_button);
+        preButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallBack.preStep(mId);
+            }
+        });
+
+        finishButton = (Button) view.findViewById(R.id.fragment_ingredient_create_finsh_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(String name: selectedAdapter.ingredientMap.keySet()){
+                    for(Ingredient ingredient: selectedIngredients){
+                        if(ingredient.getIngreName().equals(name)){
+                            ingredient.setAmount(selectedAdapter.ingredientMap.get(name));
+                        }
+                    }
+                }
+
+//                for(Ingredient ingredient: selectedIngredients){
+//                    Log.i(TAG,ingredient.getIngredientId()+" "+ingredient.getIngreName()+" "+String.valueOf(ingredient.getAmount()));
+//                }
+                Kitchen.getInstance(getActivity()).insertIngredients(selectedIngredients,mId);
+                Intent intent = new Intent(getActivity(), RecipeListActivity.class);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
+    /**
+     * Container Object for passing around
+     *
+     */
     private class PassObject{
         View view;
         Ingredient ingredient;
@@ -98,6 +157,7 @@ public class IngredientCreateFragment extends Fragment {
             srcList = list;
         }
     }
+
 
     private boolean removeItemToList(List<Ingredient> l, Ingredient it){
         boolean result = l.remove(it);
@@ -121,9 +181,7 @@ public class IngredientCreateFragment extends Fragment {
             ItemBaseAdapter associatedAdapter = (ItemBaseAdapter)parent.getAdapter();
             List<Ingredient> associatedList = associatedAdapter.getIngredients();
 
-
             PassObject passObject = new PassObject(view,selectedIngredient,associatedList);
-
             ClipData data = ClipData.newPlainText("", "");
             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
             view.startDrag(data, shadowBuilder, passObject, 0);
@@ -289,6 +347,8 @@ public class IngredientCreateFragment extends Fragment {
     static class SelectedViewHolder{
         TextView text;
         EditText editText;
+        TextView unitText;
+        Button cancelButton;
     }
 
     /**
@@ -335,13 +395,19 @@ public class IngredientCreateFragment extends Fragment {
      */
     public class ItemSelectedListAdapter extends ItemBaseAdapter {
 
+        public HashMap<String,Integer> ingredientMap;
 
         public ItemSelectedListAdapter(Context context, List<Ingredient> ingredients) {
             super(context, ingredients);
+            ingredientMap = new HashMap<>();
+        }
+
+        public List<Ingredient>  getSelectedList(){
+            return list;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
 
             // reuse views
@@ -352,16 +418,63 @@ public class IngredientCreateFragment extends Fragment {
                 SelectedViewHolder viewHolder = new SelectedViewHolder();
                 viewHolder.text = (TextView) rowView.findViewById(R.id.list_view_item_ingredient_title_text_view);
                 viewHolder.editText = (EditText) rowView.findViewById(R.id.list_view_item_ingredient_amount_edit_view);
+                viewHolder.unitText = (TextView) rowView.findViewById(R.id.list_view_item_ingredient_unit);
+                viewHolder.cancelButton = (Button) rowView.findViewById(R.id.list_view_item_ingredient_delete_button);
                 rowView.setTag(viewHolder);
             }
 
             SelectedViewHolder holder = (SelectedViewHolder) rowView.getTag();
             holder.text.setText(list.get(position).getIngreName());
-
+            holder.editText.setTag(list.get(position).getIngreName());
+            holder.editText.addTextChangedListener(new IngredientTextWatcher(holder.editText));
+            String unit = Kitchen.getInstance(getActivity()).getUnitById(list.get(position).getUnitId()).getUnit();
+            holder.unitText.setText(unit);
+            Ingredient tempIngredient = list.get(position);
+            holder.cancelButton.setOnClickListener(new IngredientOnClickListener(tempIngredient));
             rowView.setOnDragListener(new ItemOnDragListener(list.get(position)));
 
             return rowView;
         }
 
+    }
+
+    private class IngredientOnClickListener implements View.OnClickListener{
+        private Ingredient ingredient;
+
+        public IngredientOnClickListener(Ingredient ingredient){
+            this.ingredient = ingredient;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(removeItemToList(selectedIngredients,ingredient)){
+                addItemToList(optionIngredients,ingredient);
+            }
+            optionAdapter.notifyDataSetChanged();
+            selectedAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class IngredientTextWatcher implements TextWatcher{
+        private EditText view;
+
+        public IngredientTextWatcher(EditText view){
+            this.view = view;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            selectedAdapter.ingredientMap.put((String)view.getTag(),Integer.parseInt(s.toString()));
+        }
     }
 }

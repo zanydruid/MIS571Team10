@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.File;
@@ -147,7 +149,7 @@ public class Kitchen {
     public List<Nutrition> getNutritionsFromDB(int id){
         String[] args = new String[1];
         args[0] = String.valueOf(id);
-        Cursor cursor = this.execQuery(SQLCommand.GET_NUTRITIONS,args);
+        Cursor cursor = this.execQuery(SQLCommand.GET_NUTRITIONS_BY_ID,args);
         CurserWrapper wrapper = new CurserWrapper(cursor);
         List<Nutrition> nutritions = new ArrayList<>();
         try{
@@ -167,19 +169,38 @@ public class Kitchen {
      *
      * @return
      */
-    private List<Flavor> getFlavorsFromDB(){
-        Cursor cursor = this.execQuery(SQLCommand.GET_FLAVORS);
+    public List<Flavor> getFlavorsFromDB(int id){
+        String[] args = new String[1];
+        args[0] = String.valueOf(id);
+        Cursor cursor = this.execQuery(SQLCommand.GET_FLAVORS_By_ID,args);
         CurserWrapper wrapper = new CurserWrapper(cursor);
         List<Flavor> flavors = new ArrayList<>();
         try{
             wrapper.moveToFirst();
             while(!wrapper.isAfterLast()){
                 flavors.add(wrapper.getFlavor());
+                wrapper.moveToNext();
             }
         } finally {
             wrapper.close();
         }
         return flavors;
+    }
+
+    public List<Flavor> getFlavorList(){
+        Cursor cursor = this.execQuery(SQLCommand.GET_FLAVORS);
+        CurserWrapper wrapper = new CurserWrapper(cursor);
+        List<Flavor> list = new ArrayList<>();
+        try{
+            wrapper.moveToFirst();
+            while(!wrapper.isAfterLast()){
+                list.add(wrapper.getFlavorList());
+                wrapper.moveToNext();
+            }
+        } finally {
+            wrapper.close();
+        }
+        return list;
     }
 
 
@@ -195,7 +216,7 @@ public class Kitchen {
         try{
             wrapper.moveToFirst();
             while(!wrapper.isAfterLast()){
-                recipes.add(wrapper.getRecipe());
+                recipes.add(wrapper.getRecipeList());
                 wrapper.moveToNext();
             }
 
@@ -214,14 +235,19 @@ public class Kitchen {
     public Recipe getRecipeById(int id){
         String[]args = new String[1];
         args[0] = String.valueOf(id);
-        Cursor cursor = this.execQuery(SQLCommand.GET_RECIPE, args);
+        Cursor cursor = this.execQuery(SQLCommand.GET_RECIPE_BY_ID, args);
+        Cursor ratingCursor = this.execQuery(SQLCommand.GET_AVERAGE_RATING,args);
+        CurserWrapper ratingWapper = new CurserWrapper(ratingCursor);
         CurserWrapper wrapper = new CurserWrapper(cursor);
         try{
             wrapper.moveToFirst();
-           if(wrapper.getCount()==0){
+            ratingWapper.moveToFirst();
+           if(wrapper.getCount()==0||ratingWapper.getCount()==0){
                return null;
            }
-            return wrapper.getRecipe();
+            Recipe recipe = wrapper.getRecipe();
+            recipe.setRating(ratingWapper.getAverageRating());
+            return recipe;
         } finally {
             wrapper.close();
         }
@@ -249,6 +275,67 @@ public class Kitchen {
             wrapper.close();
         }
         return comments;
+    }
+
+    public void insertRecipe(Recipe recipe){
+        String[] args = new String[7];
+        args[0] = String.valueOf(recipe.getId());
+        args[1] = recipe.getName();
+        args[2] = recipe.getDescription();
+        args[3] = String.valueOf(recipe.getTime());
+        args[4] = String.valueOf(recipe.getServePeople());
+        args[5] = recipe.getSource();
+        String realPath = recipe.getPhotoUri().toString();
+        //String realPath = getRealPathFromURI(mContext,recipe.getPhotoUri());
+        args[6] = realPath;
+        this.execSQL(SQLCommand.INSERT_RECIPE, args);
+    }
+
+//    public String getRealPathFromURI(Context context, Uri contentUri) {
+//        Cursor cursor = null;
+//        try {
+//            String[] proj = { MediaStore.Images.Media.DATA };
+//            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+//            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//            return cursor.getString(column_index);
+//        } finally {
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//        }
+//    }
+
+    public void updateRecipe(Recipe recipe){
+        String[] args = new String[7];
+        args[0] = recipe.getName();
+        args[1] = String.valueOf(recipe.getTime());
+        args[2] = String.valueOf(recipe.getServePeople());
+        args[3] = recipe.getDescription();
+        args[4] = recipe.getSource();
+        args[5] = recipe.getPhotoUri().toString();
+        args[6] = String.valueOf(recipe.getId());
+        this.execSQL(SQLCommand.UPDATE_RECIPE,args);
+    }
+
+    public void insertFlavors(List<Flavor> flavors, int recipeId){
+        String[] args = new String[3];
+        for(Flavor flavor: flavors){
+            args[0] = String.valueOf(flavor.getFlavorId());
+            args[1] = String.valueOf(recipeId);
+            args[2] = String.valueOf(flavor.getAmount());
+            this.execSQL(SQLCommand.INSERT_FLAVORS,args);
+        }
+    }
+
+    public void insertIngredients(List<Ingredient> ingredients, int recipeId){
+        String[] args = new String[3];
+        for(Ingredient ingredient: ingredients){
+            args[0] = String.valueOf(ingredient.getIngredientId());
+            args[1] = String.valueOf(recipeId);
+            args[2] = String.valueOf(ingredient.getAmount());
+            this.execSQL(SQLCommand.INSERT_INGREDIENTS_BY_ID,args);
+        }
     }
 
     /**
@@ -331,17 +418,4 @@ public class Kitchen {
         if (mDatabase !=null) mDatabase.close();
     }
 
-
-    /**
-     *
-     * @param recipe
-     * @return
-     */
-    public File getPhotoFile(Recipe recipe){
-        File externalFileDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if(externalFileDir==null){
-            return null;
-        }
-        return new File(externalFileDir,recipe.getPhotoFile());
-    }
 }

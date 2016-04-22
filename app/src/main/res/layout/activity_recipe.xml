@@ -24,7 +24,7 @@
                 android:layout_below="@id/activity_recipe_photo_image_view"
                 android:text="Spicy Crab"
                 android:layout_margin="10dp"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
             <RatingBar
                 android:id="@+id/activity_recipe_ratingbar_indicator"
                 android:layout_width="wrap_content"
@@ -37,11 +37,8 @@
                 android:layout_toRightOf="@id/activity_recipe_name_text_view"/>
         </RelativeLayout>
         <include layout="@layout/recipe_infor_layout"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/darkGrey"/>
         <include layout="@layout/fragment_tab_host"/>
+
 
     </LinearLayout>
 </ScrollView>

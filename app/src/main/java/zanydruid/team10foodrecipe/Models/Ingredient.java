@@ -16,9 +16,10 @@ public class Ingredient{
         this.unitId = uid;
     }
 
-    public Ingredient(int id, String name){
+    public Ingredient(int id, String name,int unitId){
         this.ingredientId = id;
         this.ingreName = name;
+        this.unitId = unitId;
     }
 
 

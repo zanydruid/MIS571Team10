@@ -2,6 +2,7 @@ package zanydruid.team10foodrecipe.utility;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.net.Uri;
 
 import zanydruid.team10foodrecipe.Models.Comment;
 import zanydruid.team10foodrecipe.Models.Flavor;
@@ -53,9 +54,15 @@ public class CurserWrapper extends android.database.CursorWrapper {
     public Ingredient getIngredient(){
         int ingredientId = getInt(0);
         String ingredientName = getString(1);
-        return new Ingredient(ingredientId, ingredientName);
+        int unitId = getInt(2);
+        return new Ingredient(ingredientId, ingredientName,unitId);
     }
 
+    /**
+     * Get Nutrition by recipe id
+     *
+     * @return
+     */
     public Nutrition getNutrition(){
         int nutritionId = getInt(0);
         String nutritionName = getString(1);
@@ -65,33 +72,61 @@ public class CurserWrapper extends android.database.CursorWrapper {
         return nutrition;
     }
 
-    public Flavor getFlavor(){
+    public Flavor getFlavorList(){
         int flavorId = getInt(0);
         String flavorName = getString(1);
         Flavor flavor = new Flavor(flavorId,flavorName);
         return flavor;
     }
 
-    public Recipe getRecipe(){
-        int RecipeId = getInt(0);
+    public Flavor getFlavor(){
+        String flavorName = getString(0);
+        int amount = getInt(1);
+        Flavor flavor = new Flavor(flavorName,amount);
+        return flavor;
+    }
+
+    public Recipe getRecipeList(){
+        int recipeId = getInt(0);
         String name = getString(1);
-        int rating = getInt(2);
-        String description = getString(3);
-        int time = getInt(4);
-        int calories = getInt(5);
-        int ingredientNum = getInt(6);
-        int servePeople = getInt(7);
-        String source = getString(8);
+        int time = getInt(2);
+        String photoUriString = getString(3);
+
         Recipe recipe = new Recipe();
-        recipe.setId(RecipeId);
+        recipe.setId(recipeId);
         recipe.setName(name);
-        recipe.setRating(rating);
+        recipe.setTime(time);
+        if(!(photoUriString==null)) {
+            Uri uri = Uri.parse(photoUriString);
+            recipe.setPhotoUri(uri);
+        }
+        return recipe;
+    }
+
+    public int getAverageRating(){
+        return getInt(0);
+    }
+
+    public Recipe getRecipe(){
+        int recipeId = getInt(0);
+        String name = getString(1);
+        int time = getInt(2);
+        int servePeople = getInt(3);
+        String description = getString(4);
+        String source = getString(5);
+        String photoUriString = getString(6);
+
+        Recipe recipe = new Recipe();
+        recipe.setId(recipeId);
+        recipe.setName(name);
         recipe.setDescription(description);
         recipe.setTime(time);
-        recipe.setCaloriesNum(calories);
-        recipe.setIngredientNum(ingredientNum);
         recipe.setServePeople(servePeople);
         recipe.setSource(source);
+        if(!(photoUriString==null)) {
+            Uri uri = Uri.parse(photoUriString);
+            recipe.setPhotoUri(uri);
+        }
         return recipe;
     }
 

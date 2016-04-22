@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGreen">
     <TextView
-        android:layout_margin="10dp"
         android:id="@+id/list_view_item_ingredient_title_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:text="Pork"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:gravity="center"
+        android:text="Pork"
+        android:textColor="@color/White"/>
     <EditText
         android:id="@+id/list_view_item_ingredient_amount_edit_view"
-        android:layout_width="200dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="type in amount here"/>
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/list_view_item_ingredient_unit"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:text="pound"
+        android:textColor="@color/White"/>
+    <Button
+        android:id="@+id/list_view_item_ingredient_delete_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_action_delete"/>
 
 </LinearLayout>

@@ -10,12 +10,15 @@
         android:layout_marginBottom="25dp"
         android:layout_marginTop="10dp"/>
     <EditText
+        android:id="@+id/fragment_comments_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/fragment_comments_comment"
-        android:layout_gravity="center_horizontal"/>
+        android:minLines="3"
+        android:background="@drawable/border"
+        android:text="Type in your comment..."
+        android:gravity="top"/>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

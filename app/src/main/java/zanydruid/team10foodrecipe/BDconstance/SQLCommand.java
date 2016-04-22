@@ -15,21 +15,32 @@ public abstract class SQLCommand
     public static final String GET_UNITS = "select * from Unit";
 
     // get list of ingredients by a recipe id
-    public static final String GET_INGREDIENTS_BY_ID = "select I.Iid,I.ingredientName,D.IAmount,D.Uid from ingredient I, ingredientdetails D where I.Iid = D.Iid and D.Rid = ?";
+    public static final String GET_RECIPE_BY_ID = "select Rid,Rname,time,ServePpl,Description,Source,picture from recipe where Rid = ?";
+
+    public static final String GET_AVERAGE_RATING = "select avg(Crating) from comment where Rid = ?";
+
+    public static final String GET_RECIPES = "select Rid, RName, Time, picture from Recipe";
 
     public static final String GET_INGREDIENTS = "select * from ingredient";
 
-    public static final String GET_NUTRITIONS = "select N.Nid,N.NName,D.NAmount,D.Uid from nutrition N, nutritiondetails D where N.Nid = D.Nid and D.Rid = ?";
+    public static final String GET_INGREDIENTS_BY_ID = "select I.Iid, I.IngredientName,D.Iamount, I.uid from ingredient I, ingredientDetails D where D.Iid = I.Iid and D.rid = ?";
+
+    public static final String GET_NUTRITIONS_BY_ID = "select nutrition.Nid,nutrition.NName,sum(N.NAmount*I.IAmount) as [totalFacts],nutrition.Uid from nutrition, nutritiondetails N, ingredientdetails I where nutrition.Nid = N.Nid and N.Iid = I.Iid and Rid = ? group by nutrition.Nid";
 
     public static final String GET_COMMENTS = "select CRating, Comment from comment where Rid =?";
 
     public static final String WRITE_COMMENT = "insert into Comment(Rid,comment,crating) values (?,?,?)";
 
-    public static final String GET_FLAVORS = "select * from Flavor";
+    public static final String GET_FLAVORS_By_ID = "select flavor.fname, d.famount from flavor, flavordetails d where d.fid = flavor.fid and d.rid = ?";
 
-    public static final String GET_RECIPES = "select * from Recipe";
+    public static final String GET_FLAVORS = "select * from flavor";
 
-    public static final String GET_RECIPE = "select * from Recipe where Rid = ?";
+    public static final String INSERT_RECIPE = "insert into recipe (Rid,RName,Description,Time,ServePpl,Source,picture) values(?,?,?,?,?,?,?)";
 
+    public static final String UPDATE_RECIPE = "update recipe set RName=?,Time=?,ServePpl=?,Description=?,Source=?,picture=? where rid=?";
+
+    public static final String INSERT_FLAVORS = "insert into flavordetails (Fid, Rid, Famount) values(?,?,?)";
+
+    public static final String INSERT_INGREDIENTS_BY_ID = "insert into ingredientdetails (Iid,Rid,IAmount) values(?,?,?)";
 }
 

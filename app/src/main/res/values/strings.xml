@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Team10FoodRecipe</string>
+    <string name="flavor">Flavor</string>
 </resources>

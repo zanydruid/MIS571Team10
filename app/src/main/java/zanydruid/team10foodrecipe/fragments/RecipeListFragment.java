@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import java.util.List;
 import zanydruid.team10foodrecipe.Models.Recipe;
 import zanydruid.team10foodrecipe.R;
 import zanydruid.team10foodrecipe.activities.RecipeActivity;
+import zanydruid.team10foodrecipe.activities.RecipeCreateActivity;
 import zanydruid.team10foodrecipe.utility.Kitchen;
 
 /**
@@ -30,7 +32,6 @@ import zanydruid.team10foodrecipe.utility.Kitchen;
  */
 public class RecipeListFragment extends Fragment {
 
-    private static final String ARG_RCIPELIST = "recipeList";
     private List<Recipe> mRecipeList;
     private RecyclerView mRecyclerView;
     private RecipeAdapter mAdapter;
@@ -69,17 +70,23 @@ public class RecipeListFragment extends Fragment {
         private Recipe mRecipe;
         private ImageView mImageView;
         private TextView mTitleTextView;
+        private TextView mTimeTextView;
 
         public RecipeHolder(View itemView){
             super(itemView);
             mImageView = (ImageView) itemView.findViewById(R.id.recycler_list_item_image_view);
             mTitleTextView = (TextView) itemView.findViewById(R.id.recycler_list_item_title_text_view);
+            mTimeTextView = (TextView) itemView.findViewById(R.id.recycler_list_item_time_text_view);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Recipe recipe){
             mRecipe = recipe;
             mTitleTextView.setText(mRecipe.getName());
+            mTimeTextView.setText(String.valueOf(mRecipe.getTime())+" min");
+            if(!(mRecipe.getPhotoUri()==null)) {
+                mImageView.setImageURI(mRecipe.getPhotoUri());
+            }
         }
 
         @Override
@@ -200,8 +207,18 @@ public class RecipeListFragment extends Fragment {
                 return false;
             }
         });
-
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menu_recipelist_new:
+                int newId = mRecipeList.size()+1;
+                Intent intent = RecipeCreateActivity.newIntent(getActivity(),newId);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

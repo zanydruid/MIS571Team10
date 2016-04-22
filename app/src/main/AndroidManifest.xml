@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="zanydruid.team10foodrecipe"
           xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -10,17 +12,18 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activities.RecipeActivity"
             android:parentActivityName=".activities.RecipeListActivity">
-
         </activity>
+
         <activity android:name=".activities.RecipeListActivity">
-
-        </activity>
-        <activity android:name=".activities.RecipeCreateActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.RecipeCreateActivity"
+            android:parentActivityName=".activities.RecipeListActivity">
+
         </activity>
 
     </application>
