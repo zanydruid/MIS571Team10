@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:text="Basic Information"
         android:gravity="center"
-        android:layout_margin="5dp"/>
+        android:layout_margin="15dp"
+        android:textSize="25dp"
+        style="?android:listSeparatorTextViewStyle"/>
     <include layout="@layout/view_camera_and_title"/>
     <TextView
         android:layout_width="match_parent"
@@ -28,7 +30,7 @@
         android:ems="10"
         android:minLines="3"
         android:background="@drawable/border"
-        android:text="Type in your comment..."
+        android:text="Type in description..."
         android:gravity="top"/>
 
     <LinearLayout
@@ -46,49 +48,65 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Flavors"
+        style="?android:listSeparatorTextViewStyle"/>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-         <Spinner
-            android:layout_width="150dp"
+
+        <LinearLayout
+            android:id="@+id/flavor1"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:prompt="@string/flavor"
+                android:id="@+id/fragment_recipe_create_flavor1"/>
+            <EditText
+                android:id="@+id/fragment_recipe_create_flavor1_text_view"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/flavor2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:prompt="@string/flavor"
-            android:id="@+id/fragment_recipe_create_flavor1"/>
-        <EditText
-            android:id="@+id/fragment_recipe_create_flavor1_text_view"
-            android:layout_width="50dp"
+            android:layout_below="@id/flavor1">
+            <Spinner
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:prompt="@string/flavor"
+                android:id="@+id/fragment_recipe_create_flavor2"/>
+            <EditText
+                android:id="@+id/fragment_recipe_create_flavor2_text_view"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/flavor3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Spinner
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:prompt="@string/flavor"
-            android:id="@+id/fragment_recipe_create_flavor2"/>
-        <EditText
-            android:id="@+id/fragment_recipe_create_flavor2_text_view"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Spinner
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:prompt="@string/flavor"
-            android:id="@+id/fragment_recipe_create_flavor3"/>
-        <EditText
-            android:id="@+id/fragment_recipe_create_flavor3_text_view"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"/>
-    </LinearLayout>
+            android:layout_below="@id/flavor2">
+            <Spinner
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:prompt="@string/flavor"
+                android:id="@+id/fragment_recipe_create_flavor3"/>
+            <EditText
+                android:id="@+id/fragment_recipe_create_flavor3_text_view"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
         <Button
             android:id="@+id/fragment_recipe_create_next_button"
             android:layout_width="wrap_content"

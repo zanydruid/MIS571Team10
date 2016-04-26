@@ -7,7 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Ingredients"/>
+        android:text="Ingredients"
+        android:textSize="25dp"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"/>
     <LinearLayout
         android:layout_margin="10dp"
         android:layout_width="match_parent"
@@ -27,7 +31,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ingredients"/>
+                android:text="Ingredients"
+                style="?android:listSeparatorTextViewStyle"
+                android:gravity="center"/>
 
             <ListView
                 android:id="@+id/fragment_ingredient_create_option_listview"
@@ -46,7 +52,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Ingredients"/>
+                android:text="Your Ingredients"
+                style="?android:listSeparatorTextViewStyle"
+                android:gravity="center"/>
             <ListView
                 android:id="@+id/fragment_ingredient_create_selected_listview"
                 android:layout_width="match_parent"

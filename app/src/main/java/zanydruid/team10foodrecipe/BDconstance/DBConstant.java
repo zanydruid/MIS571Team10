@@ -12,7 +12,7 @@ public abstract class DBConstant
     //database file directory
     public static String DATABASE_PATH = "/data/data/zanydruid.team10foodrecipe/databases";
     //database file name
-    public static String DATABASE_FILE = "team10t.db";
+    public static String DATABASE_FILE = "team10f.db";
     //database version
     public static int DATABASE_VERSION = 1;
 }

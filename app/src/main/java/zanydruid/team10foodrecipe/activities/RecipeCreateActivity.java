@@ -36,12 +36,12 @@ public class RecipeCreateActivity extends SingleFragmentActivity implements Reci
     protected void onCreate(Bundle savedInstanceState) {
         mId = (int) getIntent().getSerializableExtra(EXTRA_RECIPE_ID);
         super.onCreate(savedInstanceState);
-        // Copy the db in assets to data/data/
-        try{
-            Kitchen.copyDB(getBaseContext());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+//        // Copy the db in assets to data/data/
+//        try{
+//            Kitchen.copyDB(getBaseContext());
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override

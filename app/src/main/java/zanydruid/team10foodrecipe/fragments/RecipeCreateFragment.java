@@ -3,8 +3,12 @@ package zanydruid.team10foodrecipe.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +27,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +39,7 @@ import zanydruid.team10foodrecipe.Models.Flavor;
 import zanydruid.team10foodrecipe.Models.Recipe;
 import zanydruid.team10foodrecipe.R;
 import zanydruid.team10foodrecipe.utility.Kitchen;
+import zanydruid.team10foodrecipe.utility.PictureUtils;
 
 /**
  * Created by yizhu on 4/9/16.
@@ -45,8 +54,8 @@ public class RecipeCreateFragment extends Fragment {
     private Flavor flavor2;
     private Flavor flavor3;
     private static final String ARG_RECIPE_ID = "recipeId";
-    private static final String TAG = "recipeCreate";
-    private static final int REQUEST_GALLERY = 0;
+    //private static final String TAG = "recipeCreate";
+    //private static final int REQUEST_GALLERY = 0;
     private static final int REQUEST_CAMERA = 1;
     private int ifUpdate;
     private CallBack mCallBack;
@@ -54,7 +63,7 @@ public class RecipeCreateFragment extends Fragment {
     private EditText recipeName;
     private ImageView recipePhoto;
     private ImageButton recipeCamera;
-    private ImageButton recipeGallery;
+    //private ImageButton recipeGallery;
     private EditText recipeDescription;
     private EditText recipeHour;
     private EditText recipeMinute;
@@ -67,6 +76,8 @@ public class RecipeCreateFragment extends Fragment {
     private EditText recipeFlavorAmount2;
     private EditText recipeFlavorAmount3;
     private Button nextButton;
+
+    private File mPhotoFile;
 
     public static RecipeCreateFragment newInstance(int id){
         Bundle args = new Bundle();
@@ -116,6 +127,7 @@ public class RecipeCreateFragment extends Fragment {
         for(Flavor flavor: flavorList){
             flavorStringList.add(flavor.getFlavorName());
         }
+        mPhotoFile = Kitchen.getInstance(getActivity()).getPhotoFile(mRecipe);
     }
 
     @Nullable
@@ -260,33 +272,37 @@ public class RecipeCreateFragment extends Fragment {
 
         recipePhoto = (ImageView)view.findViewById(R.id.recipe_create_photo);
         if(!(mRecipe.getPhotoUri()==null)){
-            recipePhoto.setImageURI(mRecipe.getPhotoUri());
+            //recipePhoto.setImageURI(mRecipe.getPhotoUri());
+            Bitmap bitmap = PictureUtils.getScaleBitmap(mRecipe.getPhotoUri().getPath(), recipePhoto.getWidth(), recipePhoto.getHeight());
+            recipePhoto.setImageBitmap(bitmap);
         }
-        ViewTreeObserver observer = recipePhoto.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                updatePhotoView();
-            }
-        });
 
-        recipeGallery = (ImageButton) view.findViewById(R.id.recipe_create_photo_gallery);
-        recipeGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , REQUEST_GALLERY);
-            }
-        });
+//        recipeGallery = (ImageButton) view.findViewById(R.id.recipe_create_photo_gallery);
+//        recipeGallery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                pickPhoto.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                startActivityForResult(Intent.createChooser(pickPhoto, "pickaphoto"), REQUEST_GALLERY);
+//            }
+//        });
 
+        PackageManager packageManager = getActivity().getPackageManager();
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        boolean canTakePhoto = mPhotoFile != null &&
+                captureImage.resolveActivity(packageManager) != null;
         recipeCamera = (ImageButton) view.findViewById(R.id.recipe_create_photo_camera);
+        recipeCamera.setEnabled(canTakePhoto);
+        if(canTakePhoto){
+            Uri uri = Uri.fromFile(mPhotoFile);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        }
         recipeCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(takePicture, REQUEST_CAMERA);
+                mRecipe.setPhotoUri(Uri.fromFile(mPhotoFile));
+                startActivityForResult(captureImage, REQUEST_CAMERA);
             }
         });
 
@@ -299,21 +315,20 @@ public class RecipeCreateFragment extends Fragment {
             return;
         }
         switch(requestCode){
-            case REQUEST_GALLERY:
-                Uri selectedImage = data.getData();
-                mRecipe.setPhotoUri(selectedImage);
-                updatePhotoView();
-                break;
+//            case REQUEST_GALLERY:
+//                recipePhoto.setImageURI(data.getData());
+//                mRecipe.setPhotoUri(data.getData());
+//                break;
             case REQUEST_CAMERA:
-                Uri takenImage = data.getData();
-                mRecipe.setPhotoUri(takenImage);
                 updatePhotoView();
                 break;
         }
     }
 
     public void updatePhotoView(){
-            recipePhoto.setImageURI(mRecipe.getPhotoUri());
+        Bitmap bitmap = PictureUtils.getScaleBitmap(mRecipe.getPhotoUri().getPath(), recipePhoto.getWidth(), recipePhoto.getHeight());
+        recipePhoto.setImageBitmap(bitmap);
+
     }
 
     /**

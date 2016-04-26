@@ -3,6 +3,9 @@ package zanydruid.team10foodrecipe.fragments;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +29,7 @@ import zanydruid.team10foodrecipe.R;
 import zanydruid.team10foodrecipe.activities.RecipeActivity;
 import zanydruid.team10foodrecipe.activities.RecipeCreateActivity;
 import zanydruid.team10foodrecipe.utility.Kitchen;
+import zanydruid.team10foodrecipe.utility.PictureUtils;
 
 /**
  * Created by yizhu on 4/9/16.
@@ -83,9 +87,16 @@ public class RecipeListFragment extends Fragment {
         public void bind(Recipe recipe){
             mRecipe = recipe;
             mTitleTextView.setText(mRecipe.getName());
-            mTimeTextView.setText(String.valueOf(mRecipe.getTime())+" min");
+            mTimeTextView.setText(String.valueOf(mRecipe.getTime()) + " min");
             if(!(mRecipe.getPhotoUri()==null)) {
-                mImageView.setImageURI(mRecipe.getPhotoUri());
+//                Drawable tempDrawable = Drawable.createFromPath(mRecipe.getPhotoUri().getPath());
+//                mImageView.setImageDrawable(tempDrawable);
+//                if(!(tempDrawable==null)){
+//
+//                }
+
+                Bitmap bitmap = PictureUtils.getScaleBitmap(mRecipe.getPhotoUri().getPath(), mImageView.getWidth(), mImageView.getHeight());
+                mImageView.setImageBitmap(bitmap);
             }
         }
 

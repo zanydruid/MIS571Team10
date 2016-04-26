@@ -2,6 +2,8 @@ package zanydruid.team10foodrecipe.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import zanydruid.team10foodrecipe.fragments.CommentFragment;
 import zanydruid.team10foodrecipe.fragments.IngredientFragment;
 import zanydruid.team10foodrecipe.fragments.NutritionFragment;
 import zanydruid.team10foodrecipe.utility.Kitchen;
+import zanydruid.team10foodrecipe.utility.PictureUtils;
 
 public class RecipeActivity extends AppCompatActivity {
     private Recipe mRecipe;
@@ -39,7 +42,6 @@ public class RecipeActivity extends AppCompatActivity {
     private FragmentTabHost mTabHost;
 
     private static final String EXTRA_RECIPE_ID = "recipeId";
-    private static final String TAG = "recipe";
 
     public static Intent newIntent(Context context, int id){
         Intent intent = new Intent(context,RecipeActivity.class);
@@ -58,8 +60,10 @@ public class RecipeActivity extends AppCompatActivity {
         mFlavorList = Kitchen.getInstance(this).getFlavorsFromDB(id);
 
         mImageView = (ImageView) findViewById(R.id.activity_recipe_photo_image_view);
-        mImageView.setImageURI(mRecipe.getPhotoUri());
-
+        if(!(mRecipe.getPhotoUri()==null)) {
+            Bitmap bitmap = PictureUtils.getScaleBitmap(mRecipe.getPhotoUri().getPath(), mImageView.getWidth(), mImageView.getHeight());
+            mImageView.setImageBitmap(bitmap);
+        }
         mRecipeName = (TextView) findViewById(R.id.activity_recipe_name_text_view);
         mRecipeName.setText(mRecipe.getName());
 

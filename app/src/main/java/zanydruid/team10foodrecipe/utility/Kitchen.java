@@ -285,7 +285,7 @@ public class Kitchen {
         args[3] = String.valueOf(recipe.getTime());
         args[4] = String.valueOf(recipe.getServePeople());
         args[5] = recipe.getSource();
-        String realPath = recipe.getPhotoUri().toString();
+        String realPath = recipe.getPhotoUri().getPath();
         //String realPath = getRealPathFromURI(mContext,recipe.getPhotoUri());
         args[6] = realPath;
         this.execSQL(SQLCommand.INSERT_RECIPE, args);
@@ -416,6 +416,14 @@ public class Kitchen {
     public void closeDB()
     {
         if (mDatabase !=null) mDatabase.close();
+    }
+
+    public File getPhotoFile(Recipe recipe){
+        File externalFileDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(externalFileDir==null){
+            return null;
+        }
+        return new File(externalFileDir,recipe.getPhotoFile());
     }
 
 }
